@@ -64,67 +64,104 @@ complete_tasks = []
 def add_task():
     while True:
         print()
-        a_task = input("Enter a task you'd like to add to your to-do list: ").lower()
+        try:
+            a_task = input("Enter a task you'd like to add to your to-do list: ").lower()
+        except Exception as e:
+            print("An error occurred while getting the task:", e)
+            continue
+
         incomplete_tasks.append(a_task)
 
-        continue_adding = input("Would you like to add another task? y or n? ").lower()
+        try:
+            continue_adding = input("Would you like to add another task? y or n? ").lower()
+        except Exception as e:
+            print("An error occurred while getting user input:", e)
+            continue
+
         if continue_adding == 'n':
             break
-        else:
-            continue
 
 def view_tasks():
     while True:
         print()
-        print("Incomplete Tasks:")
-        print(incomplete_tasks)
-        print()
-        print("Completed Tasks:")
-        print(complete_tasks)
-        
-        continue_view = input("Type x to exit: ").lower()
-        if continue_view == 'x': 
-            break
-        else: 
-            print("Try again")
+        try:
+            print("Incomplete Tasks:")
+            print(incomplete_tasks)
+            print()
+            print("Completed Tasks:")
+            print(complete_tasks)
+            
+            continue_view = input("Type x to exit: ").lower()
+        except Exception as e:
+            print("An error occurred while displaying tasks:", e)
+            continue
 
+        if continue_view == 'x':
+            break
+        else:
+            print("Invalid input. Please try again.")
 
 def mark_complete():
     while True:
         print()
-        print(incomplete_tasks)
-        print()
-        task = input('Enter the completed task from the list above: ').lower()
-        for task in incomplete_tasks:
+        try:
+            print(incomplete_tasks)
+            print()
+            task = input('Enter the completed task from the list above: ').lower()
+        except Exception as e:
+            print("An error occurred while getting the completed task:", e)
+            continue
+
+        try:
             if task in incomplete_tasks:
                 complete_tasks.append(task)
                 incomplete_tasks.remove(task)
                 print(f"{task} has been marked as completed.\nView your tasks to see it in the completed tasks list.")
-        complete_more = input("Would you like to complete another task? y or n: ").lower()
-        if complete_more == 'n': break
-        else: continue
+        except Exception as e:
+            print("An error occurred while marking the task as complete:", e)
+            continue
 
+        try:
+            complete_more = input("Would you like to complete another task? y or n: ").lower()
+        except Exception as e:
+            print("An error occurred while getting user input:", e)
+            continue
+
+        if complete_more == 'n':
+            break
 
 def delete_task():
     while True:
         print()
-        print('Incomplete Tasks:')
-        print(incomplete_tasks)
-        print()
-        print("Completed Tasks:")
-        print(complete_tasks)
+        try:
+            print('Incomplete Tasks:')
+            print(incomplete_tasks)
+            print()
+            print("Completed Tasks:")
+            print(complete_tasks)
 
-        delete = input("Choose a task to delete: ").lower()
-        if delete == incomplete_tasks:
-            incomplete_tasks.remove(delete)
-        elif delete == complete_tasks:
-            complete_tasks.remove(delete)
-        
-        delete_again = input('Would you like to delete another task? y or n: ').lower()
+            delete = input("Choose a task to delete: ").lower()
+        except Exception as e:
+            print("An error occurred while getting the task to delete:", e)
+            continue
+
+        try:
+            if delete in incomplete_tasks:
+                incomplete_tasks.remove(delete)
+            elif delete in complete_tasks:
+                complete_tasks.remove(delete)
+        except Exception as e:
+            print("An error occurred while deleting the task:", e)
+            continue
+
+        try:
+            delete_again = input('Would you like to delete another task? y or n: ').lower()
+        except Exception as e:
+            print("An error occurred while getting user input:", e)
+            continue
+
         if delete_again == 'n':
             break
-        else:
-            continue
 
 def run_app():
     while True:
@@ -137,17 +174,25 @@ def run_app():
         print('3: Mark A Task As Complete')
         print('4: Delete A Task')
         print('5: Quit')
-        choice = int(input("Please enter a number: "))
+        
+        try:
+            choice = int(input("Please enter a number: "))
+        except Exception as e:
+            print("An error occurred while getting user input:", e)
+            continue
 
         if choice == 1:
             add_task()
-        if choice == 2:
+        elif choice == 2:
             view_tasks()
-        if choice == 3: 
+        elif choice == 3: 
             mark_complete()
-        if choice == 4:
+        elif choice == 4:
             delete_task()
-        if choice == 5: 
+        elif choice == 5: 
             print("Thank you for using Kai's To Do List!")
             break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 5.")
+
 run_app()
