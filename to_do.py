@@ -86,10 +86,15 @@ def view_tasks():
         print()
         try:
             print("Incomplete Tasks:")
-            print(incomplete_tasks)
+            print("-" * 20)
+            for task in incomplete_tasks:
+                print(task)
             print()
+
             print("Completed Tasks:")
-            print(complete_tasks)
+            print("-" * 20)
+            for task in complete_tasks:
+                print(task)
             
             continue_view = input("Type x to exit: ").lower()
         except Exception as e:
@@ -105,7 +110,10 @@ def mark_complete():
     while True:
         print()
         try:
-            print(incomplete_tasks)
+            print("Incomplete Tasks:")
+            print("-" * 20)
+            for task in incomplete_tasks:
+                print(task)
             print()
             task = input('Enter the completed task from the list above: ').lower()
         except Exception as e:
@@ -135,10 +143,16 @@ def delete_task():
         print()
         try:
             print('Incomplete Tasks:')
-            print(incomplete_tasks)
+            print("-" * 20)
+            for task in incomplete_tasks:
+                print(task)
             print()
+
             print("Completed Tasks:")
-            print(complete_tasks)
+            print("-" * 20)
+            for task in complete_tasks:
+                print(task)
+            print()
 
             delete = input("Choose a task to delete: ").lower()
         except Exception as e:
@@ -194,5 +208,5 @@ def run_app():
             break
         else:
             print("Invalid choice. Please enter a number between 1 and 5.")
-
+            
 run_app()
