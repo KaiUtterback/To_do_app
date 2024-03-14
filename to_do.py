@@ -58,6 +58,12 @@ By completing this project, you'll gain practical experience in Python programmi
 in your own life.
 '''
 
+class Color:
+    RED = '\033[91m'
+    YELLOW = '\033[93m'
+    GREEN = '\033[92m'
+    RESET = '\033[0m'
+
 incomplete_tasks = []
 complete_tasks = []
 
@@ -65,12 +71,18 @@ def add_task():
     while True:
         print()
         try:
-            a_task = input("Enter a task you'd like to add to your to-do list: ").lower()
+            name_value = input("Enter a task you'd like to add to your to-do list: ").lower()
+            priority = input("Enter the priority level for the task (high, medium, low): ").lower()
         except Exception as e:
-            print("An error occurred while getting the task:", e)
+            print("An error occurred while getting task details:", e)
             continue
 
-        incomplete_tasks.append(a_task)
+        task_with_priority = {
+            'name': name_value,
+            'priority': priority
+        }
+
+        incomplete_tasks.append(task_with_priority)
 
         try:
             continue_adding = input("Would you like to add another task? y or n? ").lower()
@@ -88,14 +100,22 @@ def view_tasks():
             print("Incomplete Tasks:")
             print("-" * 20)
             for task in incomplete_tasks:
-                print(task)
+                priority = task['priority']
+                if priority == 'high':
+                    color = Color.RED
+                elif priority == 'medium':
+                    color = Color.YELLOW
+                else:
+                    color = Color.GREEN
+                print(f"{color}{task['name']}{Color.RESET} - Priority: {priority.capitalize()}")
             print()
 
             print("Completed Tasks:")
             print("-" * 20)
             for task in complete_tasks:
-                print(task)
-            
+                print(task['name'])
+            print()
+
             continue_view = input("Type x to exit: ").lower()
         except Exception as e:
             print("An error occurred while displaying tasks:", e)
@@ -112,19 +132,21 @@ def mark_complete():
         try:
             print("Incomplete Tasks:")
             print("-" * 20)
-            for task in incomplete_tasks:
-                print(task)
+            for incomplete_task in incomplete_tasks:
+                print(incomplete_task['name'])
             print()
-            task = input('Enter the completed task from the list above: ').lower()
+
+            given_task_name = input('Enter the completed task from the list above: ').lower()
         except Exception as e:
             print("An error occurred while getting the completed task:", e)
             continue
 
         try:
-            if task in incomplete_tasks:
-                complete_tasks.append(task)
-                incomplete_tasks.remove(task)
-                print(f"{task} has been marked as completed.\nView your tasks to see it in the completed tasks list.")
+            for incomplete_task in incomplete_tasks:
+                if incomplete_task['name'] == given_task_name:
+                    complete_tasks.append(incomplete_task)
+                    incomplete_tasks.remove(incomplete_task)
+                    print(f"{given_task_name} has been marked as completed.\nView your tasks to see it in the completed tasks list.")
         except Exception as e:
             print("An error occurred while marking the task as complete:", e)
             continue
@@ -145,13 +167,13 @@ def delete_task():
             print('Incomplete Tasks:')
             print("-" * 20)
             for task in incomplete_tasks:
-                print(task)
+                print(task['name'])
             print()
 
             print("Completed Tasks:")
             print("-" * 20)
             for task in complete_tasks:
-                print(task)
+                print(task['name'])
             print()
 
             delete = input("Choose a task to delete: ").lower()
@@ -160,10 +182,12 @@ def delete_task():
             continue
 
         try:
-            if delete in incomplete_tasks:
-                incomplete_tasks.remove(delete)
-            elif delete in complete_tasks:
-                complete_tasks.remove(delete)
+            for task in incomplete_tasks:
+                if task['name'] == delete:
+                    incomplete_tasks.remove(task)
+            for task in complete_tasks:
+                if task['name'] == delete:
+                    complete_tasks.remove(task)
         except Exception as e:
             print("An error occurred while deleting the task:", e)
             continue
